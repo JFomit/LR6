@@ -1,0 +1,45 @@
+CompileFlags:
+    Add: [-Wall, -Wextra, -Wpedantic, -Wconversion, -Wunreachable-code, -Wshadow, -std=c++20]
+InlayHints:
+  ParameterNames: No
+  DeducedTypes: Yes
+Hover:
+  ShowAKA: Yes
+Diagnostics:
+  UnusedIncludes: Strict
+  ClangTidy:
+    Add: [bugprone-*, cert-*, modernize-*, performance-*]
+    Remove: [bugprone-easily-swappable-parameters, modernize-use-trailing-return-type, modernize-avoid-c-arrays]
+    CheckOptions:
+      # NOTE: Camel_Snake_Case exists, if needed in the future
+      readability-identifier-naming.AbstractClassCase: CamelCase
+
+      readability-identifier-naming.ClassCase: CamelCase
+
+      readability-identifier-naming.ClassConstantCase: CamelCase
+      readability-identifier-naming.ClassConstantPrefix: k
+
+      readability-identifier-naming.PrivateMemberCase: lower_case
+      readability-identifier-naming.PrivateMemberSuffix: _
+
+      readability-identifier-naming.ClassConceptCase: CamelCase
+
+      readability-identifier-naming.ConstantCase: CamelCase
+      readability-identifier-naming.ConstantPrefix: k
+
+      readability-identifier-naming.ConstantParameterCase: lower_case
+      
+      readability-identifier-naming.ConstantPointerParameterCase: lower_case
+
+      readability-identifier-naming.ConstexprFunctionCase: CamelCase
+
+      readability-identifier-naming.EnumCase: CamelCase
+
+      readability-identifier-naming.EnumConstantCase: CamelCase
+      readability-identifier-naming.EnumConstantPrefix: k
+
+      readability-identifier-naming.FunctionCase: CamelCase
+
+      readability-identifier-naming.MacroDefinitionCase: UPPER_CASE
+
+      readability-identifier-naming.LocalVariableCase: lower_case
