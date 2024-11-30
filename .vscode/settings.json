@@ -19,5 +19,11 @@
         "editor.autoIndent": "advanced",
         "diffEditor.ignoreTrimWhitespace": false
     },
-    "cmake.options.statusBarVisibility": "compact"
+    "cmake.options.statusBarVisibility": "icon",
+    "cmake.options.advanced": {
+        "configurePreset": {
+            "statusBarVisibility": "icon",
+            "statusBarLength": 15
+        }
+    }
 }
