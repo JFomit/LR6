@@ -16,7 +16,6 @@ int main() {
       std::cout << a_char;
     }
   }
-  std::cout << '\n';
 
   return 0;
 }
