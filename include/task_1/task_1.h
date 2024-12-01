@@ -12,6 +12,8 @@ class Task1 : public lr6::Task {
 
   ~Task1() override = default;
   Result<std::monostate> Run() override;
+
+  Result<String> CheckValid(const String &str);
 };
 }  // namespace lr6::task1
 

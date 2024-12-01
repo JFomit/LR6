@@ -88,7 +88,7 @@ String &String::Append(CodePoint code_point) {
 
 String::String(char8_t *buffer, size_t length) {
   length_ = length;
-  capcity_ = length;
+  capcity_ = length + 1;
   buffer_ = new char[length_ + 1]{};
 
   memcpy(buffer_, buffer, length_);
@@ -96,7 +96,7 @@ String::String(char8_t *buffer, size_t length) {
 
 String::String(char *buffer) {
   length_ = strlen(buffer);
-  capcity_ = length_;
+  capcity_ = length_ + 1;
   buffer_ = new char[length_ + 1]{};
 
   memcpy(buffer_, buffer, length_ + 1);
@@ -104,7 +104,7 @@ String::String(char *buffer) {
 
 String::String(const char *buffer) {
   length_ = strlen(buffer);
-  capcity_ = length_;
+  capcity_ = length_ + 1;
   buffer_ = new char[length_ + 1]{};
 
   memcpy(buffer_, buffer, length_ + 1);
@@ -117,9 +117,9 @@ String::String(size_t capcity) {
 }
 
 String::String(const String &other) {
-  buffer_ = new char[other.capcity_];
+  buffer_ = new char[other.capcity_]{};
   capcity_ = other.capcity_;
-  memcpy(buffer_, other.buffer_, other.length_ + 1);
+  memcpy(buffer_, other.buffer_, other.length_);
   length_ = other.length_;
 }
 
@@ -142,9 +142,9 @@ String &String::operator=(const String &other) {
     return *this;
   }
   delete[] buffer_;
-  buffer_ = new char[other.capcity_];
+  buffer_ = new char[other.capcity_]{};
   capcity_ = other.capcity_;
-  memcpy(buffer_, other.buffer_, other.length_ + 1);
+  memcpy(buffer_, other.buffer_, other.length_);
   length_ = other.length_;
 
   return *this;

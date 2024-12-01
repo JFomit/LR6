@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <cstring>
 #include <ostream>
+#include "common/box.h"
 #include "common/utf8.h"
 
 namespace lr6 {
@@ -27,7 +28,7 @@ class String {
     buffer_ = new char[N]{};
     memcpy(buffer_, &array[0], N);
     length_ = N - 1;
-    capcity_ = N - 1;
+    capcity_ = N;
   }
 
   /**

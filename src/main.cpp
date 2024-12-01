@@ -1,7 +1,5 @@
-#include <iostream>
 #include "common/error.h"
 #include "common/format.h"
-#include "common/input.h"
 #include "common/print.h"
 #include "common/result.h"
 #include "task_1/task_1.h"
@@ -15,7 +13,7 @@ int main() {
   auto result = t1.Run();
   if (IsErr(result)) {
     auto b = UnwrapErr(result);
-    lr6::PrintLine("{}", b->What());
+    lr6::PrintLine("{}", Red(b->What()));
   }
 
   return 0;
