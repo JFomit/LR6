@@ -2,12 +2,12 @@
 #include "common/format.h"
 #include "common/print.h"
 #include "common/result.h"
-#include "tasks/task_2.h"
+#include "tasks/task_3.h"
 
 using lr6::IsErr;
 
 int main() {
-  lr6::task2::Task2 t1{};
+  lr6::task3::Task3 t1{};
   t1.Greet();
 
   auto result = t1.Run();

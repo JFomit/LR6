@@ -7,6 +7,7 @@ set(LIBRARY_SOURCES
     "task.cpp"
     "print.cpp"
     "task_1.cpp"
-    "task_2.cpp")
+    "task_2.cpp"
+    "task_3.cpp")
 
 add_library(app STATIC ${LIBRARY_SOURCES})

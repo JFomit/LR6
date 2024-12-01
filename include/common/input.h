@@ -45,6 +45,7 @@ Result<T> Next(std::optional<const char *> message = std::nullopt) {
         message.value_or("Не удалось прочитать значение."));
   }
 
+  std::cin.ignore(1, '\n');
   return value;
 }
 }  // namespace lr6

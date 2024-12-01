@@ -94,6 +94,13 @@ String &String::Append(CodePoint code_point) {
   }
 }
 
+String &String::Append(const String &other) {
+  Reserve(length_ + other.length_);
+  memcpy(buffer_ + length_, other.buffer_, other.length_);
+  length_ += other.length_;
+  return *this;
+}
+
 bool String::Insert(const String &other, size_t position) {
   size_t i = 0;
   while (i < length_) {
@@ -133,6 +140,18 @@ bool String::Insert(const String &other, size_t position) {
   }
   length_ += other.length_;
   return true;
+}
+
+void String::PopBack() {
+  if (length_ <= 0) {
+    return;
+  }
+
+  size_t count = 1;
+  while ((*(buffer_ + length_ - count) & 0b1100'0000) == 0b1000'000) {
+    ++count;
+  }
+  length_ -= count;
 }
 
 String::String(char8_t *buffer, size_t length) {
@@ -228,6 +247,10 @@ void String::Free() {
   length_ = 0;
 }
 
+size_t String::length() {
+  return length_;
+}
+
 std::ostream &operator<<(std::ostream &stream, const String &string) {
   // TODO: maybe its better to print chars one by one?
   stream << string.AsCString();
@@ -312,5 +335,4 @@ bool String::CharsIterator::operator!=(const String::CharsIterator &other) {
 }
 
 // #endregion
-
 }  // namespace lr6

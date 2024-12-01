@@ -52,9 +52,9 @@ class String {
   /**
    * @brief Construct a new empty String object
    * 
-   * @param capcity number of bytes to initially reserve.
+   * @param capcity number of bytes to initially reserve, 8 by default.
    */
-  explicit String(size_t capacity);
+  explicit String(size_t capacity = 8);
   String(const String &other);
   String(String &&other) noexcept;
 
@@ -86,6 +86,14 @@ class String {
   String &Append(char c);
 
   /**
+   * @brief Appends another string to the end of this one
+   * 
+   * @param other a String to append
+   * @return String& this
+   */
+  String &Append(const String &other);
+
+  /**
    * @brief Appends a u8 string literal at the end of the string
    * 
    * @tparam N length of the string
@@ -111,6 +119,8 @@ class String {
 
   bool Insert(const String &other, size_t pos);
 
+  void PopBack();
+
   /**
    * @brief Get a pointer to the string's internal buffer.
    * @warning If this string is modified in *any* way,
@@ -128,6 +138,14 @@ class String {
    * @return A char *, pointing to the charachter array, holding the copy of this String's buffer.
    */
   [[nodiscard]] char *ToCString() const;
+
+  /**
+   * @brief Gets the *byte* length of the string.
+   * Be advised: this method doesn't return the number of characthers in
+   * the string; only the mere number of bytes it occupies (w/o null terminator)
+   * @return size_t *byte* length of the string
+   */
+  size_t length();
 
   class CharsIterator {
    public:
