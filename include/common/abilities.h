@@ -11,6 +11,13 @@ struct BasicAbility {
 };
 
 template <typename T>
+struct BasicConcreteAbility {
+  T &get() { return static_cast<T &>(*this); }
+
+  T const &get() const { return static_cast<T const &>(*this); }
+};
+
+template <typename T>
 struct Addable : BasicAbility<T, Addable> {
   T operator+(const T &other) { return T(this->get().get() + other.get()); }
 };
@@ -76,8 +83,13 @@ struct Xorable : BasicAbility<T, Orable> {
   T operator^(const T &other) { return T(this->get().get() ^ other.get()); }
 };
 
+/**
+ * @brief Represents a type that supports logical operations in some form
+ * 
+ * @tparam T 
+ */
 template <typename T>
-struct Logic : Orable<T>, Andable<T>, Xorable<T> {};
+struct Logical : Orable<T>, Andable<T>, Xorable<T> {};
 
 /**
  * @brief Represent a binary integer number (e. g. like an int)
@@ -85,8 +97,7 @@ struct Logic : Orable<T>, Andable<T>, Xorable<T> {};
  * @tparam T 
  */
 template <typename T>
-struct BinaryNumber : Number<T>, Shiftable<T>, Logic<T> {};
-
+struct BinaryNumber : Number<T>, Shiftable<T>, Logical<T> {};
 }  // namespace lr6
 
 #endif  // LR6_COMMON_SKILLS_H_

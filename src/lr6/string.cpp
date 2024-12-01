@@ -1,7 +1,9 @@
 #include "common/string.h"
+#include <cassert>
 #include <cstddef>
 #include <cstdint>
 #include <cstring>
+#include "common/utf8.h"
 
 namespace lr6 {
 const char *String::AsCString() const {
@@ -47,6 +49,10 @@ void String::ReserveExact(size_t count) {
 }
 
 String &String::Append(char8_t c) {
+  if (c == '\0') {
+    return *this;
+  }
+
   if (length_ + 1 >= capcity_) {
     Grow();
   }
@@ -54,6 +60,30 @@ String &String::Append(char8_t c) {
   buffer_[length_] = c;
   ++length_;
   return *this;
+}
+
+String &String::Append(CodePoint code_point) {
+  uint32_t value = code_point.get();
+  auto array = *reinterpret_cast<char8_t(*)[4]>(&value);
+  if ((array[0] & 0b1000'0000) == 0) {
+    Append(array[0]);
+    return *this;
+  } else if ((array[0] & 0b1110'0000) == 0b1100'0000) {
+    Append(array[0]);
+    Append(array[1]);
+    return *this;
+  } else if ((array[0] & 0b1111'0000) == 0b1110'0000) {
+    Append(array[0]);
+    Append(array[1]);
+    Append(array[2]);
+    return *this;
+  } else {
+    Append(array[0]);
+    Append(array[1]);
+    Append(array[2]);
+    Append(array[3]);
+    return *this;
+  }
 }
 
 String::String(char8_t *buffer, size_t length) {
@@ -163,19 +193,27 @@ String::CharsIterator::CharsIterator(const char8_t *buffer, size_t length) {
 }
 
 String::CharsIterator &String::CharsIterator::operator++() {
+  assert(length_ > 0);
+
   auto first = *buffer_ptr_;
   if ((first & 0b1000'0000) == 0) {
-    ++buffer_ptr_;
+    buffer_ptr_ += 1;
+    length_ -= 1;
     return *this;
-  } else if ((first & 0b1100'0000) == 0b1100'0000) {
-    buffer_ptr_ += 2;
+  } else if ((first & 0b1111'0000) == 0b1111'0000) {
+    buffer_ptr_ += 4;
+    length_ -= 4;
     return *this;
   } else if ((first & 0b1110'0000) == 0b1110'0000) {
     buffer_ptr_ += 3;
+    length_ -= 3;
+    return *this;
+  } else if ((first & 0b1100'0000) == 0b1100'0000) {
+    buffer_ptr_ += 2;
+    length_ -= 2;
     return *this;
   } else {
-    buffer_ptr_ += 4;
-    return *this;
+    assert(false);
   }
 }
 
@@ -187,18 +225,27 @@ String::CharsIterator String::CharsIterator::end() {
   return {this->buffer_ptr_ + this->length_, 0};
 }
 
-char32_t String::CharsIterator::operator*() const {
-  auto first = *buffer_ptr_;
-  if ((first & 0b1000'0000) == 0) {
-    return (uint32_t)first;
-  } else if ((first & 0b1100'0000) == 0b1100'0000) {
-    return ((uint32_t)first) | (uint32_t)buffer_ptr_[1] << 8;
-  } else if ((first & 0b1110'0000) == 0b1110'0000) {
-    return ((uint32_t)first) | (uint32_t)buffer_ptr_[1] << 8 |
-           (uint32_t)buffer_ptr_[2] << 16;
+CodePoint String::CharsIterator::operator*() const {
+  uint32_t array[4]{};
+  array[0] = buffer_ptr_[0];
+
+  // TODO: validation
+  if ((array[0] & 0b1000'0000) == 0) {
+    return CodePoint::FromBytes(array);
+  } else if ((array[0] & 0b1111'0000u) == 0b1111'0000u) {
+    array[1] = buffer_ptr_[1];
+    array[2] = buffer_ptr_[2];
+    array[3] = buffer_ptr_[3];
+    return CodePoint::FromBytes(array);
+  } else if ((array[0] & 0b1110'0000) == 0b1110'0000) {
+    array[1] = buffer_ptr_[1];
+    array[2] = buffer_ptr_[2];
+    return CodePoint::FromBytes(array);
+  } else if ((array[0] & 0b1100'0000) == 0b1100'0000) {
+    array[1] = buffer_ptr_[1];
+    return CodePoint::FromBytes(array);
   } else {
-    return ((uint32_t)first) | (uint32_t)buffer_ptr_[1] << 8 |
-           (uint32_t)buffer_ptr_[2] << 16 | (uint32_t)buffer_ptr_[3] << 24;
+    assert(false);
   }
 }
 

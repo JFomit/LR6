@@ -37,8 +37,18 @@ T &Unwrap(Result<T> &result) {
 }
 
 template <typename T>
+T &&Unwrap(Result<T> &&result) {
+  return std::get<T>(std::move(result));
+}
+
+template <typename T>
 ErrorType &UnwrapErr(Result<T> &result) {
   return std::get<ErrorType>(result);
+}
+
+template <typename T>
+ErrorType &&UnwrapErr(Result<T> &&result) {
+  return std::get<ErrorType>(std::move(result));
 }
 
 template <typename T, typename FOk, typename FErr>

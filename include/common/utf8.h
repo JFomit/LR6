@@ -1,27 +1,25 @@
 #ifndef LR6_COMMON_UTF_8_H_
 #define LR6_COMMON_UTF_8_H_
 
+#include <cstddef>
 #include <cstdint>
+#include <ostream>
+#include <span>
 #include "common/abilities.h"
 #include "common/strong_alias.h"
 
 namespace lr6 {
-// using CodePoint = uint32_t;
 
-using CodePoint = StrongAlias<uint32_t, class CodePoint_t, BinaryNumber>;
+template <typename T>
+struct FromByteable {
+  static T FromBytes(uint32_t (&arr)[4]) {
+    return T((arr[0]) | arr[1] << 8 | arr[2] << 16 | arr[3] << 24);
+  }
+};
 
-// auto chars = reinterpret_cast<char(*)[4]>(&c);
+using CodePoint = StrongAlias<uint32_t, struct CodePoint_t, FromByteable>;
 
-//     for (size_t i = 0; i < 4; ++i) {
-//       char a_char = chars[0][i];
-//       if (a_char == '\0') {
-//         break;
-//       }
-
-//       std::cout << a_char;
-// }
-
-// std::ostream &operator<<(std::ostream &stream, CodePoint code_point) {}
+std::ostream &operator<<(std::ostream &stream, CodePoint code_point);
 }  // namespace lr6
 
 #endif  // LR6_COMMON_UTF_8_H_

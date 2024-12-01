@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <cstring>
 #include <ostream>
+#include "common/utf8.h"
 
 namespace lr6 {
 
@@ -93,6 +94,14 @@ class String {
   }
 
   /**
+   * @brief Appends a unicode code point at the end of the string
+   * 
+   * @param code_point to append
+   * @return String& this
+   */
+  String &Append(CodePoint code_point);
+
+  /**
    * @brief Get a pointer to the string's internal buffer.
    * @warning If this string is modified in *any* way,
    * the pointer returned from this method might become invalid. Also,
@@ -112,7 +121,7 @@ class String {
 
   class CharsIterator {
    public:
-    char32_t operator*() const;
+    CodePoint operator*() const;
     CharsIterator begin();
     CharsIterator end();
 
