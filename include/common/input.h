@@ -6,6 +6,7 @@
 
 namespace lr6 {
 Result<CodePoint> NextChar();
-}
+Result<String> NextString();
+}  // namespace lr6
 
 #endif  // LR6_COMMON_INPUT_H_

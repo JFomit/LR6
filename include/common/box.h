@@ -1,8 +1,6 @@
 #ifndef LR6_COMMON_BOX_H_
 #define LR6_COMMON_BOX_H_
 
-#include <utility>
-
 namespace lr6 {
 /**
    * @brief Aka `lame' std::unique_ptr<T>
@@ -13,11 +11,6 @@ template <typename T>
 class Box {
  public:
   Box(T *pointer) { pointer_ = pointer; }
-
-  template <typename... Args>
-  Box(Args &&...args) {
-    pointer_ = new T(std::forward(args)...);
-  }
 
   Box(const Box &) = delete;
 
@@ -33,6 +26,10 @@ class Box {
   ~Box() { delete pointer_; }
 
   T &operator*() { return *pointer_; }
+
+  const T *operator->() const { return pointer_; }
+
+  T *operator->() { return pointer_; }
 
   const T &operator*() const { return *pointer_; }
 

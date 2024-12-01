@@ -2,11 +2,11 @@
 #define LR6_COMMON_RESULT_H_
 
 #include <variant>
-#include "common/box.h"
 #include "common/error.h"
+#include "common/rc.h"
 
 namespace lr6 {
-using ErrorType = Box<BasicError>;
+using ErrorType = Rc<BasicError>;
 
 template <typename T>
 using Result = std::variant<ErrorType, T>;

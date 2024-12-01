@@ -6,8 +6,8 @@ set(LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(ASAN OFF)
-set(TSAN ON)
+set(ASAN ON)
+set(TSAN OFF)
 
 if(ASAN AND TSAN)
     message(FATAL_ERROR "Thread sanitizer and address sanitizer are mutually exclusive.")

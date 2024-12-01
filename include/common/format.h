@@ -14,59 +14,59 @@ struct Colored {
   Colored(T value, String format) : value(value), format(std::move(format)) {}
 
   Colored<T> Bold() {
-    format.Append(u8";1");
+    format.Append(";1");
     return Colored<T>(std::move(value), format);
   }
 
   Colored<T> Italic() {
-    format.Append(u8";3");
+    format.Append(";3");
     return Colored<T>(std::move(value), format);
   }
 
   Colored<T> Underline() {
-    format.Append(u8";4");
+    format.Append(";4");
     return Colored<T>(std::move(value), format);
   }
 };
 
 template <typename T>
 Colored<T> Black(T value) {
-  return Colored<T>(value, String(u8"30"));
+  return Colored<T>(value, String("30"));
 }
 
 template <typename T>
 Colored<T> Red(T value) {
-  return Colored<T>(value, String(u8"31"));
+  return Colored<T>(value, String("31"));
 }
 
 template <typename T>
 Colored<T> Green(T value) {
-  return Colored<T>(value, String(u8"32"));
+  return Colored<T>(value, String("32"));
 }
 
 template <typename T>
 Colored<T> Yellow(T value) {
-  return Colored<T>(value, String(u8"33"));
+  return Colored<T>(value, String("33"));
 }
 
 template <typename T>
 Colored<T> Blue(T value) {
-  return Colored<T>(value, String(u8"34"));
+  return Colored<T>(value, String("34"));
 }
 
 template <typename T>
 Colored<T> Magenta(T value) {
-  return Colored<T>(value, String(u8"35"));
+  return Colored<T>(value, String("35"));
 }
 
 template <typename T>
 Colored<T> Cyan(T value) {
-  return Colored<T>(value, String(u8"36"));
+  return Colored<T>(value, String("36"));
 }
 
 template <typename T>
 Colored<T> White(T value) {
-  return Colored<T>(value, String(u8"37"));
+  return Colored<T>(value, String("37"));
 }
 
 }  // namespace lr6

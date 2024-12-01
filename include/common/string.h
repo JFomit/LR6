@@ -24,7 +24,7 @@ class String {
   */
   template <size_t N>
   String(char8_t const (&array)[N]) {
-    buffer_ = new char8_t[N]{};
+    buffer_ = new char[N]{};
     memcpy(buffer_, &array[0], N);
     length_ = N - 1;
     capcity_ = N - 1;
@@ -43,6 +43,12 @@ class String {
    * @param buffer C-string
    */
   explicit String(char *buffer);
+  /**
+   * @brief Construct a new String object
+   * 
+   * @param buffer C-string
+   */
+  explicit String(const char *buffer);
   /**
    * @brief Construct a new empty String object
    * 
@@ -77,7 +83,7 @@ class String {
    * @param c a char to append
    * @return String& this
    */
-  String &Append(char8_t c);
+  String &Append(char c);
 
   /**
    * @brief Appends a u8 string literal at the end of the string
@@ -86,7 +92,7 @@ class String {
    * @return String& this
    */
   template <size_t N>
-  String &Append(const char8_t (&c)[N]) {
+  String &Append(const char (&c)[N]) {
     for (size_t i = 0; i < N; ++i) {
       Append(c[i]);
     }
@@ -132,8 +138,8 @@ class String {
     CharsIterator &operator++();
 
    private:
-    CharsIterator(const char8_t *buffer, size_t length);
-    const char8_t *buffer_ptr_;
+    CharsIterator(const char *buffer, size_t length);
+    const char *buffer_ptr_;
     size_t length_;
   };
 
@@ -151,7 +157,7 @@ class String {
   void Free();
 
  private:
-  char8_t *buffer_;
+  char *buffer_;
   size_t length_;
   size_t capcity_;
 

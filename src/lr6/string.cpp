@@ -14,7 +14,7 @@ char *String::ToCString() const {
   char *c_str = new char[length_ + /* null terminator*/ 1]{};
   // It is actually perfectly valid to have a NUL char8_t in the middle of utf-8.
   // sadly, C functions are not aware of this fact. So, we use memcpy() instead of strcpy.
-  std::memcpy(c_str, (void *)buffer_, length_ * sizeof(char8_t));
+  std::memcpy(c_str, (void *)buffer_, length_ * sizeof(char));
   c_str[length_] = '\0';
 
   return c_str;
@@ -29,7 +29,7 @@ void String::Reserve(size_t count) {
     capcity_ *= 2;  // preserving exponential growth
   }
 
-  auto *new_buffer = new char8_t[capcity_ + 1]{};
+  auto *new_buffer = new char[capcity_ + 1]{};
   memcpy(new_buffer, buffer_, length_);
   delete[] buffer_;
   buffer_ = new_buffer;
@@ -42,13 +42,13 @@ void String::ReserveExact(size_t count) {
 
   capcity_ = count;
 
-  auto *new_buffer = new char8_t[capcity_ + 1]{};
+  auto *new_buffer = new char[capcity_ + 1]{};
   memcpy(new_buffer, buffer_, length_);
   delete[] buffer_;
   buffer_ = new_buffer;
 }
 
-String &String::Append(char8_t c) {
+String &String::Append(char c) {
   if (c == '\0') {
     return *this;
   }
@@ -64,7 +64,7 @@ String &String::Append(char8_t c) {
 
 String &String::Append(CodePoint code_point) {
   uint32_t value = code_point.get();
-  auto array = *reinterpret_cast<char8_t(*)[4]>(&value);
+  auto array = *reinterpret_cast<char(*)[4]>(&value);
   if ((array[0] & 0b1000'0000) == 0) {
     Append(array[0]);
     return *this;
@@ -89,7 +89,7 @@ String &String::Append(CodePoint code_point) {
 String::String(char8_t *buffer, size_t length) {
   length_ = length;
   capcity_ = length;
-  buffer_ = new char8_t[length_ + 1]{};
+  buffer_ = new char[length_ + 1]{};
 
   memcpy(buffer_, buffer, length_);
 }
@@ -97,7 +97,15 @@ String::String(char8_t *buffer, size_t length) {
 String::String(char *buffer) {
   length_ = strlen(buffer);
   capcity_ = length_;
-  buffer_ = new char8_t[length_ + 1]{};
+  buffer_ = new char[length_ + 1]{};
+
+  memcpy(buffer_, buffer, length_ + 1);
+}
+
+String::String(const char *buffer) {
+  length_ = strlen(buffer);
+  capcity_ = length_;
+  buffer_ = new char[length_ + 1]{};
 
   memcpy(buffer_, buffer, length_ + 1);
 }
@@ -105,10 +113,11 @@ String::String(char *buffer) {
 String::String(size_t capcity) {
   length_ = 0;
   capcity_ = capcity;
+  buffer_ = new char[capcity_]{};
 }
 
 String::String(const String &other) {
-  buffer_ = new char8_t[other.capcity_];
+  buffer_ = new char[other.capcity_];
   capcity_ = other.capcity_;
   memcpy(buffer_, other.buffer_, other.length_ + 1);
   length_ = other.length_;
@@ -133,7 +142,7 @@ String &String::operator=(const String &other) {
     return *this;
   }
   delete[] buffer_;
-  buffer_ = new char8_t[other.capcity_];
+  buffer_ = new char[other.capcity_];
   capcity_ = other.capcity_;
   memcpy(buffer_, other.buffer_, other.length_ + 1);
   length_ = other.length_;
@@ -157,7 +166,7 @@ String &String::operator=(String &&other) noexcept {
 
 void String::Grow() {
   capcity_ *= 2;
-  auto *new_buffer = new char8_t[capcity_ + 1]{};
+  auto *new_buffer = new char[capcity_ + 1]{};
   memcpy(new_buffer, buffer_, length_);
   delete[] buffer_;
   buffer_ = new_buffer;
@@ -187,7 +196,7 @@ String::CharsIterator::CharsIterator(const String &str) {
   length_ = str.length_;
 }
 
-String::CharsIterator::CharsIterator(const char8_t *buffer, size_t length) {
+String::CharsIterator::CharsIterator(const char *buffer, size_t length) {
   buffer_ptr_ = buffer;
   length_ = length;
 }
@@ -227,22 +236,22 @@ String::CharsIterator String::CharsIterator::end() {
 
 CodePoint String::CharsIterator::operator*() const {
   uint32_t array[4]{};
-  array[0] = buffer_ptr_[0];
+  array[0] = (unsigned char)buffer_ptr_[0];
 
   // TODO: validation
   if ((array[0] & 0b1000'0000) == 0) {
     return CodePoint::FromBytes(array);
   } else if ((array[0] & 0b1111'0000u) == 0b1111'0000u) {
-    array[1] = buffer_ptr_[1];
-    array[2] = buffer_ptr_[2];
-    array[3] = buffer_ptr_[3];
+    array[1] = (unsigned char)buffer_ptr_[1];
+    array[2] = (unsigned char)buffer_ptr_[2];
+    array[3] = (unsigned char)buffer_ptr_[3];
     return CodePoint::FromBytes(array);
   } else if ((array[0] & 0b1110'0000) == 0b1110'0000) {
-    array[1] = buffer_ptr_[1];
-    array[2] = buffer_ptr_[2];
+    array[1] = (unsigned char)buffer_ptr_[1];
+    array[2] = (unsigned char)buffer_ptr_[2];
     return CodePoint::FromBytes(array);
   } else if ((array[0] & 0b1100'0000) == 0b1100'0000) {
-    array[1] = buffer_ptr_[1];
+    array[1] = (unsigned char)buffer_ptr_[1];
     return CodePoint::FromBytes(array);
   } else {
     assert(false);
