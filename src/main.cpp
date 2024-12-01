@@ -1,11 +1,8 @@
-#include "common/format.h"
-#include "common/print.h"
-#include "common/result.h"
-
-using lr6::Unwrap;
+#include "task_1/task_1.h"
 
 int main() {
-  lr6::PrintLine("This is {0}!", lr6::Red(42));
+  lr6::task1::Task1 t1{};
+  t1.Greet();
 
   return 0;
 }
