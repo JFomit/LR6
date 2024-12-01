@@ -21,10 +21,10 @@ char *String::ToCString() const {
 }
 
 void String::Reserve(size_t count) {
-  if (count <= capcity_) {
+  if (count < capcity_) {
     return;
   }
-
+  capcity_ *= 2;
   while (count > capcity_) {
     capcity_ *= 2;  // preserving exponential growth
   }
@@ -62,6 +62,14 @@ String &String::Append(char c) {
   return *this;
 }
 
+String &String::Append(const char *c) {
+  while (*c != '\0') {
+    Append(*c);
+    ++c;
+  }
+  return *this;
+}
+
 String &String::Append(CodePoint code_point) {
   uint32_t value = code_point.get();
   auto array = *reinterpret_cast<char(*)[4]>(&value);
@@ -84,6 +92,47 @@ String &String::Append(CodePoint code_point) {
     Append(array[3]);
     return *this;
   }
+}
+
+bool String::Insert(const String &other, size_t position) {
+  size_t i = 0;
+  while (i < length_) {
+    char *head = buffer_ + i;
+    if (i == position) {
+      break;
+    }
+
+    if ((*head & 0b1000'0000) == 0) {
+      i += 1;
+    } else if ((*head & 0b1111'0000) == 0b1111'0000) {
+      i += 4;
+    } else if ((*head & 0b1110'0000) == 0b1110'0000) {
+      i += 3;
+    } else if ((*head & 0b1100'0000) == 0b1100'0000) {
+      i += 2;
+    } else {
+      assert(false);
+    }
+  }
+  if (i > length_) {
+    return false;
+  }
+  Reserve(length_ + other.length_);
+
+  if (i == length_) {
+    for (size_t j = 0; j < other.length_; ++j) {
+      Append(other.buffer_[j]);
+    }
+    return true;
+  }
+
+  char *head = buffer_ + i;
+  memmove(head + other.length_, head, length_ - i);
+  for (size_t j = 0; j < other.length_; ++j) {
+    head[j] = other.buffer_[j];
+  }
+  length_ += other.length_;
+  return true;
 }
 
 String::String(char8_t *buffer, size_t length) {

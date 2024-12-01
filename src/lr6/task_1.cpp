@@ -1,4 +1,4 @@
-#include "task_1/task_1.h"
+#include "tasks/task_1.h"
 #include <cassert>
 #include <cstring>
 #include "common/error.h"

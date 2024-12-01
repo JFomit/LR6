@@ -1,0 +1,4 @@
+#ifndef LR6_COMMON_UTILITY
+#define LR6_COMMON_UTILITY
+
+#endif  // LR6_COMMON_UTILITY

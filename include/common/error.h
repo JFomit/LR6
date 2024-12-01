@@ -1,8 +1,6 @@
 #ifndef LR6_COMMON_ERROR_H_
 #define LR6_COMMON_ERROR_H_
 
-#include "common/format.h"
-#include "common/print.h"
 #include "common/string.h"
 
 namespace lr6 {

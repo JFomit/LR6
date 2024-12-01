@@ -70,12 +70,13 @@ auto Transform(Result<T> result, F &&transformer) {
 }
 
 template <typename T, typename F>
-auto Bind(Result<T> result, F &&transformer) {
+auto Bind(Result<T> result,
+          F &&transformer) -> decltype(transformer(Unwrap(result))) {
   if (IsOk(result)) {
     return transformer(Unwrap(result));
   }
 
-  return Result<T>{UnwrapErr(result)};
+  return UnwrapErr(result);
 }
 }  // namespace lr6
 

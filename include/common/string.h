@@ -5,7 +5,6 @@
 #include <cstdint>
 #include <cstring>
 #include <ostream>
-#include "common/box.h"
 #include "common/utf8.h"
 
 namespace lr6 {
@@ -100,6 +99,8 @@ class String {
     return *this;
   }
 
+  String &Append(const char *c);
+
   /**
    * @brief Appends a unicode code point at the end of the string
    * 
@@ -107,6 +108,8 @@ class String {
    * @return String& this
    */
   String &Append(CodePoint code_point);
+
+  bool Insert(const String &other, size_t pos);
 
   /**
    * @brief Get a pointer to the string's internal buffer.
