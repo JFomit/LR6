@@ -6,6 +6,21 @@ set(LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(ASAN OFF)
+set(TSAN ON)
+
+if(ASAN AND TSAN)
+    message(FATAL_ERROR "Thread sanitizer and address sanitizer are mutually exclusive.")
+endif()
+
+if(ASAN)
+add_compile_options("-fsanitize=address")
+add_link_options("-fsanitize=address")
+elseif(TSAN)
+add_compile_options("-fsanitize=thread")
+add_link_options("-fsanitize=thread")
+endif()
+
 include_directories("${CMAKE_SOURCE_DIR}/include")
 
 enable_testing()
