@@ -103,9 +103,10 @@ String &String::Append(const String &other) {
 
 bool String::Insert(const String &other, size_t position) {
   size_t i = 0;
+  size_t skipped = 0;
   while (i < length_) {
     char *head = buffer_ + i;
-    if (i == position) {
+    if (skipped == position) {
       break;
     }
 
@@ -120,8 +121,9 @@ bool String::Insert(const String &other, size_t position) {
     } else {
       assert(false);
     }
+    ++skipped;
   }
-  if (i > length_) {
+  if (skipped >= length_) {
     return false;
   }
   Reserve(length_ + other.length_);
@@ -151,6 +153,7 @@ void String::PopBack() {
   while ((*(buffer_ + length_ - count) & 0b1100'0000) == 0b1000'000) {
     ++count;
   }
+  buffer_[length_] = '\0';
   length_ -= count;
 }
 

@@ -24,6 +24,7 @@ endif()
 include_directories("${CMAKE_SOURCE_DIR}/include")
 
 enable_testing()
-
+add_subdirectory(lib/googletest)
 add_subdirectory(src)
 add_subdirectory(src/lr6)
+add_subdirectory(tests)

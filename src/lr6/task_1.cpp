@@ -102,6 +102,38 @@ class StupidlyLimitedString {
   }
 };
 
+String Task1::FindEven(const char *string) {
+  if (strlen(string) == 0) {
+    return u8"";
+  }
+  String result{};
+  size_t prev = 0;
+  size_t curr = 0;
+  while (string[curr] != '\0') {
+    if (string[curr] == ' ') {
+      if ((curr - prev) % 2 == 0) {
+        while (prev <= curr) {
+          result.Append(string[prev]);
+          ++prev;
+        }
+        result.Append('\n');
+      } else {
+        prev = curr + 1;
+      }
+    }
+    ++curr;
+  }
+  if ((curr - prev) % 2 == 0) {
+    while (prev <= curr) {
+      result.Append(string[prev]);
+      ++prev;
+    }
+    result.Append('\n');
+  }
+
+  return result;
+}
+
 Result<std::monostate> Task1::Run() {
   lr6::PrintLine("Введите строку из 0 и 1:");
   auto str = StupidlyLimitedString::ReadAString();
@@ -115,30 +147,8 @@ Result<std::monostate> Task1::Run() {
   }
 
   auto string = Unwrap(real_str).AsCString();
-
-  size_t prev = 0;
-  size_t curr = 0;
-  while (string[curr] != '\0') {
-    if (string[curr] == ' ') {
-      if ((curr - prev) % 2 == 0) {
-        while (prev <= curr) {
-          std::cout << string[prev];
-          ++prev;
-        }
-        std::cout << '\n';
-      } else {
-        prev = curr + 1;
-      }
-    }
-    ++curr;
-  }
-  if ((curr - prev) % 2 == 0) {
-    while (prev <= curr) {
-      std::cout << string[prev];
-      ++prev;
-    }
-    std::cout << '\n';
-  }
+  auto result = FindEven(string);
+  std::cout << result;
 
   return Ok<std::monostate>({});
 }

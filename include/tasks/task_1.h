@@ -11,6 +11,7 @@ class Task1 : public lr6::Task {
              "группы, которые имею четную длину.") {}
 
   ~Task1() override = default;
+  String FindEven(const char *string);
   Result<std::monostate> Run() override;
 
   Result<String> CheckValid(const String &str);
