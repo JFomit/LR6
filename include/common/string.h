@@ -117,8 +117,20 @@ class String {
    */
   String &Append(CodePoint code_point);
 
+  /**
+   * @brief Inserts another string into this one
+   * 
+   * @param other The string to insert
+   * @param pos The position to insert to. Is a codepoint number, not byte
+   * @return true If insertion was successful
+   * @return false otherwise (e. g., if pos is greater than the length)
+   */
   bool Insert(const String &other, size_t pos);
 
+  /**
+   * @brief Removes the last code point from this string
+   * 
+   */
   void PopBack();
 
   /**
@@ -173,7 +185,7 @@ class String {
   [[nodiscard]] CharsIterator Chars() const;
 
   /**
-   * @brief Manually deallocates a string. Not recommended.
+   * @brief Manually deallocates the string. Not recommended.
    * 
    */
   void Free();
