@@ -24,6 +24,8 @@ class Rc {
     pointer_ = other.pointer_;
     count_ = other.count_;
     Aquire();
+
+    return *this;
   }
 
   Rc &operator=(Rc &&) = delete;
