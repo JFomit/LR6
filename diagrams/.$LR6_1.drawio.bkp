@@ -1,0 +1,37 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.7.17 Chrome/128.0.6613.186 Electron/32.2.5 Safari/537.36" version="24.7.17">
+  <diagram name="Page-1" id="XVSo9zqPjcRWBDtWXI2J">
+    <mxGraphModel dx="1713" dy="1064" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="xeqR2iTHl-vn9MlCPmVe-2" value="FindEven(s)" style="rounded=1;whiteSpace=wrap;html=1;arcSize=50;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="160" y="20" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="xeqR2iTHl-vn9MlCPmVe-5" value="result = &quot;&quot;&lt;div&gt;prev = 0&lt;/div&gt;&lt;div&gt;curr = 0&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=2;align=center;" vertex="1" parent="1">
+          <mxGeometry x="160" y="200" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="xeqR2iTHl-vn9MlCPmVe-6" value="strlen(s) == 0" style="rhombus;whiteSpace=wrap;html=1;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="177.5" y="90" width="115" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="xeqR2iTHl-vn9MlCPmVe-7" value="s[curr] != &#39;\0&#39;" style="rhombus;whiteSpace=wrap;html=1;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="177.5" y="280" width="115" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="xeqR2iTHl-vn9MlCPmVe-8" value="s[curr] == &#39; &#39;" style="rhombus;whiteSpace=wrap;html=1;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="330" y="370" width="115" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="xeqR2iTHl-vn9MlCPmVe-9" value="curr - prev % 2 ==0" style="rhombus;whiteSpace=wrap;html=1;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="330" y="480" width="115" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="xeqR2iTHl-vn9MlCPmVe-10" value="prev &amp;lt;= curr" style="rhombus;whiteSpace=wrap;html=1;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="330" y="585" width="115" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="xeqR2iTHl-vn9MlCPmVe-11" value="result.Append(s[prev])" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=2;align=center;" vertex="1" parent="1">
+          <mxGeometry x="320" y="700" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="xeqR2iTHl-vn9MlCPmVe-12" value="prev += 1" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=2;align=center;" vertex="1" parent="1">
+          <mxGeometry x="320" y="780" width="150" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

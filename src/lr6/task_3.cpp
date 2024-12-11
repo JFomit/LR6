@@ -84,6 +84,6 @@ void Task3::MagicSwap(String &str) {
   Reverse(Span{.begin = buffer, .end = buffer + str.length() - 1});
 
   // Reverse each word
-  // ReverseWords(buffer);
+  ReverseWords(buffer);
 }
 }  // namespace lr6::task3
