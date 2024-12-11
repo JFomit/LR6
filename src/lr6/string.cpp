@@ -112,15 +112,14 @@ bool String::Insert(const String &other, size_t position) {
 
     if ((*head & 0b1000'0000) == 0) {
       i += 1;
-    } else if ((*head & 0b1111'0000) == 0b1111'0000) {
-      i += 4;
-    } else if ((*head & 0b1110'0000) == 0b1110'0000) {
-      i += 3;
-    } else if ((*head & 0b1100'0000) == 0b1100'0000) {
+    } else if ((*head & 0b1110'0000) == 0b1100'0000) {
       i += 2;
+    } else if ((*head & 0b1111'0000) == 0b1110'0000) {
+      i += 3;
     } else {
-      assert(false);
+      i += 4;
     }
+
     ++skipped;
   }
   if (skipped >= length_) {
@@ -137,9 +136,7 @@ bool String::Insert(const String &other, size_t position) {
 
   char *head = buffer_ + i;
   memmove(head + other.length_, head, length_ - i);
-  for (size_t j = 0; j < other.length_; ++j) {
-    head[j] = other.buffer_[j];
-  }
+  memmove(head, other.buffer_, other.length_);
   length_ += other.length_;
   return true;
 }

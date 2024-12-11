@@ -1,4 +1,3 @@
-#include <sys/types.h>
 #include <exception>
 #include "common/error.h"
 #include "common/format.h"
@@ -10,23 +9,27 @@
 #include "tasks/task_2.h"
 #include "tasks/task_3.h"
 
-using lr6::IsErr;
+using lr6::IsErr, lr6::Unwrap, lr6::UnwrapErr;
+using lr6::Magenta, lr6::Red, lr6::Blue, lr6::Cyan, lr6::Green;
 
 void PrintHelp(int /*why*/ = 1) {
-  lr6::PrintLine("{0: ^80}", lr6::Green("Лабораторная работа 7").Bold());
-  lr6::PrintLine("{0:-^80}", lr6::Blue("Справка").Bold());
+  lr6::PrintLine("{0: ^80}", Green("Лабораторная работа 7").Bold());
+  lr6::PrintLine(
+      "{}", Cyan("Выполнил Забережный Тимофей Алексеевич, ст. группы 453501"));
+  lr6::PrintLine("{0:-^80}", Blue("Справка").Bold());
   lr6::PrintLine("Доступны опции:");
 
-  lr6::PrintLine("{0} - {1}", lr6::Magenta('q'), lr6::Red("Выход"));
-  lr6::PrintLine("{0} - {1}", lr6::Magenta('h'), lr6::Blue("Эта справка"));
-  lr6::PrintLine("{0} - {1}", lr6::Magenta('1'), "Задание 1");
-  lr6::PrintLine("{0} - {1}", lr6::Magenta('2'), "Задание 2");
-  lr6::PrintLine("{0} - {1}", lr6::Magenta('2'), "Задание 3");
+  lr6::PrintLine("{0} - {1}", Magenta('q'), Red("Выход"));
+  lr6::PrintLine("{0} - {1}", Magenta('h'), Blue("Эта справка"));
+  lr6::PrintLine("{0} - {1}", Magenta('1'), "Задание 1");
+  lr6::PrintLine("{0} - {1}", Magenta('2'), "Задание 2");
+  lr6::PrintLine("{0} - {1}", Magenta('2'), "Задание 3");
 
-  lr6::PrintLine("{0:-^80}", lr6::Blue("Справка").Bold());
+  lr6::PrintLine("{0:-^80}", Blue("Справка").Bold());
 }
 
 int main() {
+
   lr6::task1::Task1 t1{};
   lr6::task2::Task2 t2{};
   lr6::task3::Task3 t3{};
@@ -38,11 +41,11 @@ int main() {
   while (!should_exit) {
     auto opt = lr6::Next<char>();
     if (IsErr(opt)) {
-      auto err = lr6::UnwrapErr(opt);
+      auto err = UnwrapErr(opt);
       lr6::PrintLine("{}", Red(err->What()));
       continue;
     }
-    auto option = lr6::Unwrap(opt);
+    auto option = Unwrap(opt);
     switch (option) {
       case 'h':
         PrintHelp();
@@ -60,8 +63,7 @@ int main() {
         should_exit = true;
         continue;
       default:
-        lr6::PrintLine("{}",
-                       lr6::Red("Неизветсная опция. Введите h для справки."));
+        lr6::PrintLine("{}", Red("Неизветсная опция. Введите h для справки."));
         continue;
     }
 
@@ -70,10 +72,10 @@ int main() {
     try {
       auto result = task->Run();
       if (IsErr(result)) {
-        lr6::PrintLine("{}", lr6::Red(lr6::UnwrapErr(result)->What()));
+        lr6::PrintLine("{}", Red(UnwrapErr(result)->What()));
       }
     } catch (std::exception &e) {
-      lr6::PrintLine("{}", lr6::Red(e.what()));
+      lr6::PrintLine("{}", Red(e.what()));
     }
   }
 
