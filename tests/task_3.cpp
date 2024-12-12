@@ -49,3 +49,31 @@ TEST(task3, very_many_new_lines) {
   t3.MagicSwap(str);
   ASSERT_STREQ(str.AsCString(), "a\n\n\n\n\n\n\n\n");
 }
+
+TEST(task3, random) {
+  String str = u8"a b\nv u y";
+  lr6::task3::Task3 t3;
+  t3.MagicSwap(str);
+  ASSERT_STREQ(str.AsCString(), "y u v\nb a");
+}
+
+TEST(task3, random2) {
+  String str = u8"a b\nv u y\nq";
+  lr6::task3::Task3 t3;
+  t3.MagicSwap(str);
+  ASSERT_STREQ(str.AsCString(), "q\ny u v\nb a");
+}
+
+TEST(task3, random3) {
+  String str = u8"rnd b\nv u y";
+  lr6::task3::Task3 t3;
+  t3.MagicSwap(str);
+  ASSERT_STREQ(str.AsCString(), "y u v\nb rnd");
+}
+
+TEST(task3, random4) {
+  String str = u8"a bbbb\nv u y\nq";
+  lr6::task3::Task3 t3;
+  t3.MagicSwap(str);
+  ASSERT_STREQ(str.AsCString(), "q\ny u v\nbbbb a");
+}
